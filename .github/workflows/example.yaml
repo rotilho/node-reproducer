@@ -18,7 +18,7 @@ jobs:
           - '24'
           - '25'
 
-    name: Petclinic tests (GraalVM Java ${{ matrix.graalvm_java }})
+    name: Node (GraalVM Java ${{ matrix.graalvm_java }})
 
     steps:
       - uses: actions/checkout@v4
@@ -40,6 +40,6 @@ jobs:
 
       - uses: actions/upload-artifact@v5
         with:
-          name: native-image-metadata
+          name: native-image-metadata-graalvm-${{ matrix.graalvm_java }}
           path: build/native/agent-output/test
 
