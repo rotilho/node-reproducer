@@ -21,8 +21,7 @@ jobs:
     name: Petclinic tests (GraalVM Java ${{ matrix.graalvm_java }})
 
     steps:
-      - name: Checkout Spring Petclinic at fixed commit
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Set up GraalVM (Java ${{ matrix.graalvm_java }})
         uses: graalvm/setup-graalvm@v1
@@ -37,8 +36,10 @@ jobs:
           java -version
           native-image --version
 
-      - name: Make Gradle wrapper executable
-        run: chmod +x ./gradlew
+      - run: ./gradlew test -Pagent -PjavaVersion=${{ matrix.graalvm_java }} --no-daemon --stacktrace --info
 
-      - name: Run tests with -Pagent on GraalVM
-        run: ./gradlew test -Pagent -PjavaVersion=${{ matrix.graalvm_java }} --no-daemon --stacktrace
+      - uses: actions/upload-artifact@v5
+        with:
+          name: native-image-metadata
+          path: build/native/agent-output/test
+
