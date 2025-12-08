@@ -37,10 +37,15 @@ jobs:
           java -version
           native-image --version
 
-      - run: ./gradlew test -Pagent -PjavaVersion=${{ matrix.graalvm_java }} --no-daemon --stacktrace --info
+      - name: Extract major Java version
+        id: java_version
+        run: |
+          v='${{ matrix.graalvm_java }}'
+          echo "short=${v%%.*}" >> "$GITHUB_OUTPUT"
+
+      - run: ./gradlew test -Pagent -PjavaVersion=${{ steps.java_version.outputs.short }} --no-daemon --stacktrace --info
 
       - uses: actions/upload-artifact@v5
         with:
           name: native-image-metadata-graalvm-${{ matrix.graalvm_java }}
           path: build/native/agent-output/test
-
