@@ -17,6 +17,7 @@ jobs:
           - '21'
           - '24'
           - '25'
+          - '25.0.0'
 
     name: Node (GraalVM Java ${{ matrix.graalvm_java }})
 
